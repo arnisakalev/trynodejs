@@ -1,10 +1,15 @@
 "use strict";
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 class requestHandlers {
     static root(response) {
         response.writeHead(200, { "Content-Type": "text/html" });
-        var fileStream = fs.createReadStream(path.join(process.cwd(), 'index.html'));
+        var fileStream = fs.createReadStream(path.join(process.cwd(), '/client/index.html'));
+        fileStream.pipe(response);
+    }
+    static file(response, filePath) {
+        response.writeHead(200, { "Content-Type": "text/html" });
+        var fileStream = fs.createReadStream(path.join(process.cwd(), '/client' + filePath));
         fileStream.pipe(response);
     }
     static start(response, postData) {

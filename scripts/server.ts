@@ -1,6 +1,5 @@
-var http = require('http');
-var url = require('url');
-
+import http = require('http');
+import url = require('url');
 import { requestHandlers } from './requestHandlers';
 import { Router } from './router';
 
@@ -10,15 +9,11 @@ export class WishListParserServer {
     }
 
     static onRequest(request, response) {
-        //let pathname = url.parse(request.url).pathname;
-        //console.log('Request for ' + pathname + ' received.');
-
         let handle = {}
         handle["/"] = requestHandlers.root;
         handle["/start"] = requestHandlers.start;
+        handle["/file"] = requestHandlers.file;
         handle["/upload"] = requestHandlers.upload;
-
-        //Router.Route(pathname, handle, response);
 
         var postData = "";
         var pathname = url.parse(request.url).pathname;
@@ -26,10 +21,10 @@ export class WishListParserServer {
 
         request.setEncoding("utf8");
 
-        // request.addListener("data", function (postDataChunk) {
-        //     postData += postDataChunk;
-        //     console.log("Received POST data chunk '" + postDataChunk + "'.");
-        // });
+        request.addListener("data", function (postDataChunk) {
+            postData += postDataChunk;
+            console.log("Received POST data chunk '" + postDataChunk + "'.");
+        });
 
         request.addListener("end", function () {
             Router.Route(pathname, handle, response, postData);

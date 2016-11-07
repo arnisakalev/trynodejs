@@ -1,10 +1,16 @@
-var fs = require('fs');
-var path = require('path');
+import fs = require('fs');
+import path = require('path');
 
 export class requestHandlers {
     static root(response: any) {
         response.writeHead(200, { "Content-Type": "text/html" });
-        var fileStream = fs.createReadStream(path.join(process.cwd(), 'index.html'));
+        var fileStream = fs.createReadStream(path.join(process.cwd(), '/client/index.html'));
+        fileStream.pipe(response);
+    }
+
+    static file(response: any, filePath: string) {
+        response.writeHead(200, { "Content-Type": "text/html" });        
+        var fileStream = fs.createReadStream(path.join(process.cwd(), '/client' + filePath));
         fileStream.pipe(response);
     }
 
