@@ -10,6 +10,11 @@ class SteamItems {
 }
 exports.SteamItems = SteamItems;
 class SteamParseResult {
+    constructor() {
+        this._IsSuccess = false;
+        this._steamItems = new SteamItems();
+        this._resultMessage = "Тока запустили - погоди";
+    }
     getIsSuccess() { return this._IsSuccess; }
     setIsSuccess(IsSuccess) { this._IsSuccess = IsSuccess; }
     getSteamItems() { return this._steamItems; }
@@ -18,4 +23,4 @@ class SteamParseResult {
     setResultMessage(Message) { this._resultMessage = Message; }
 }
 exports.SteamParseResult = SteamParseResult;
-//# sourceMappingURL=steamItem.js.map
+//# sourceMappingURL=steamitem.js.map

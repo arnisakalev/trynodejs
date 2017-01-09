@@ -10,9 +10,8 @@ class WishListParserServer {
     static onRequest(request, response) {
         let handle = {};
         handle["/"] = requestHandlers_1.requestHandlers.root;
-        handle["/start"] = requestHandlers_1.requestHandlers.start;
-        handle["/file"] = requestHandlers_1.requestHandlers.file;
-        handle["/upload"] = requestHandlers_1.requestHandlers.upload;
+        handle["/parse"] = requestHandlers_1.requestHandlers.parse;
+        handle["/loader.js"] = requestHandlers_1.requestHandlers.js;
         var postData = "";
         var pathname = url.parse(request.url).pathname;
         console.log("Request for " + pathname + " received.");

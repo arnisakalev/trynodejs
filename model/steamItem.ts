@@ -20,9 +20,9 @@ export class SteamItems {
 }
 
 export class SteamParseResult {
-    protected _IsSuccess: boolean;
-    protected _steamItems: SteamItems;
-    protected _resultMessage: string;
+    protected _IsSuccess: boolean = false;
+    protected _steamItems: SteamItems = new SteamItems();
+    protected _resultMessage: string = "Тока запустили - погоди";
 
     public getIsSuccess(): boolean { return this._IsSuccess; }
     public setIsSuccess(IsSuccess: boolean) { this._IsSuccess = IsSuccess; }

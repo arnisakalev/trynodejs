@@ -1,41 +1,36 @@
 "use strict";
 const fs = require('fs');
 const path = require('path');
+const wishlistparser_1 = require('./wishlistparser');
 class requestHandlers {
     static root(response) {
         response.writeHead(200, { "Content-Type": "text/html" });
-        var fileStream = fs.createReadStream(path.join(process.cwd(), '/client/index.html'));
-        fileStream.pipe(response);
+        let indexStream = fs.createReadStream(path.join(process.cwd(), '/client/index.html'));
+        indexStream.pipe(response);
     }
-    static file(response, filePath) {
-        response.writeHead(200, { "Content-Type": "text/html" });
-        var fileStream = fs.createReadStream(path.join(process.cwd(), '/client' + filePath));
-        fileStream.pipe(response);
-    }
-    static start(response, postData) {
-        console.log("Request handler 'start' was called.");
-        var body = '<html>' +
-            '<head>' +
-            '<meta http-equiv="Content-Type" content="text/html; ' +
-            'charset=UTF-8" />' +
-            '</head>' +
-            '<body>' +
-            '<form action="/upload" method="post">' +
-            '<textarea name="text" rows="20" cols="60"></textarea>' +
-            '<input type="submit" value="Submit text" />' +
-            '</form>' +
-            '</body>' +
-            '</html>';
-        response.writeHead(200, { "Content-Type": "text/html" });
-        response.write(body);
+    static parse(response, postData) {
+        //console.log("Request handler 'parse' was called.");
+        //проверить таску в коллекции
+        let data = JSON.parse(postData);
+        let already;
+        if (requestHandlers.parsers !== undefined && requestHandlers.parsers.length > 0) {
+            already = requestHandlers.parsers.find(myObj => myObj.Token == data.token);
+        }
+        if (already === undefined) {
+            already = new wishlistparser_1.WishListParser(data.id, data.token);
+            already.ParseWishList();
+            requestHandlers.parsers.push(already);
+        }
+        response.writeHead(200, { "Content-Type": "application/json" });
+        response.write(JSON.stringify(already.Result));
         response.end();
     }
-    static upload(response, postData) {
-        console.log("Request handler 'upload' was called.");
-        response.writeHead(200, { "Content-Type": "text/plain" });
-        response.write("You've sent: " + postData);
-        response.end();
+    static js(response) {
+        response.writeHead(200, { "Content-Type": "text/javascript" });
+        let jsStream = fs.createReadStream(path.join(process.cwd(), "/client/loader.js"));
+        jsStream.pipe(response);
     }
 }
+requestHandlers.parsers = new Array();
 exports.requestHandlers = requestHandlers;
 //# sourceMappingURL=requestHandlers.js.map

@@ -11,9 +11,8 @@ export class WishListParserServer {
     static onRequest(request, response) {
         let handle = {}
         handle["/"] = requestHandlers.root;
-        handle["/start"] = requestHandlers.start;
-        handle["/file"] = requestHandlers.file;
-        handle["/upload"] = requestHandlers.upload;
+        handle["/parse"] = requestHandlers.parse;
+        handle["/loader.js"] = requestHandlers.js;
 
         var postData = "";
         var pathname = url.parse(request.url).pathname;

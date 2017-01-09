@@ -4,13 +4,25 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>парсер вишлистов</title>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.0/doT.js"></script>
 	<script src="/loader.js"></script>
 </head>
 <h1>парсер вишлистов</h1>
 
 <body>
 	<input type="text" name="text" rows="20" cols="60" />
-	<input type="submit" value="активация вольтрона" onclick="alert('збс');" />
+	<input type="submit" value="активация вольтрона" />
 </body>
+<div id="wishlistTbl"></div>
 
 </html>
+
+<script type="text/x-jquery-tmpl" id="wishlist">
+  <table>
+	  	{{~it.steamItems :value:index}}
+		<tr> 
+			<td>{{=value.appName}}</td>
+		</tr>
+		{{~}}
+  </table>
+</script>

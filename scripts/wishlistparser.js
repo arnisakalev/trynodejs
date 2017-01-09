@@ -4,19 +4,33 @@ const steamitem_1 = require('../model/steamitem');
 var request = require('request');
 var jsdom = require('jsdom');
 class WishListParser {
-    constructor(UserName) {
+    constructor(UserName, Token) {
         this._userName = UserName;
+        this._token = Token;
+        this._result = new steamitem_1.SteamParseResult();
+    }
+    get UserName() {
+        return this._userName;
+    }
+    get Token() {
+        return this._token;
+    }
+    get Result() {
+        return this._result;
     }
     getWishListUrl() {
         return 'http://steamcommunity.com/id/' + this._userName + '/wishlist/';
     }
     ParseWishList() {
-        return new Promise((resolve, reject) => {
+        let prom = new Promise((resolve, reject) => {
             this.loadPage().then((body) => {
                 this.parseBody(body).then((result) => {
                     resolve(result);
                 });
             });
+        });
+        prom.then((data) => {
+            this._result = data;
         });
     }
     /**

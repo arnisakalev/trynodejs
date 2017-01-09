@@ -5,22 +5,41 @@ var jsdom = require('jsdom');
 
 export class WishListParser {
     protected _userName: string;
+    protected _token: number;
+    protected _result: SteamParseResult;
+
+    get UserName(): string {
+        return this._userName;
+    }
+
+    get Token(): number{
+        return this._token;
+    }
+
+    get Result() : SteamParseResult{
+        return this._result;
+    }
 
     protected getWishListUrl() {
-        return 'http://steamcommunity.com/id/' + this._userName +'/wishlist/';
+        return 'http://steamcommunity.com/id/' + this._userName + '/wishlist/';
     }
 
-    constructor(UserName: string) {
+    constructor(UserName: string, Token: number) {
         this._userName = UserName;
+        this._token = Token;
+        this._result = new SteamParseResult();
     }
 
-    public ParseWishList(): Promise<SteamParseResult> {
-        return new Promise<SteamParseResult>((resolve, reject) => {
+    public ParseWishList() {
+        let prom = new Promise<SteamParseResult>((resolve, reject) => {
             this.loadPage().then((body) => {
                 this.parseBody(body).then((result) => {
                     resolve(result);
                 });
             });
+        });
+        prom.then((data) => {
+            this._result = data;
         });
     }
 
